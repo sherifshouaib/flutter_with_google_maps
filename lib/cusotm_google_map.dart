@@ -19,32 +19,53 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     );
   }
 
-  // @override
-  // void dispose() {
-  //   googleMapController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    googleMapController.dispose();
+    super.dispose();
+  }
 
-  // late GoogleMapController googleMapController;
+  late GoogleMapController googleMapController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        // mapType: MapType.satellite,
-        //  zoomControlsEnabled: false,
-        // onMapCreated: (controller) {
-        //   googleMapController = controller;
-        // },
-        // cameraTargetBounds:
+      body: Stack(
+        children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            zoomControlsEnabled: false,
+            onMapCreated: (controller) {
+              googleMapController = controller;
+            },
+            // cameraTargetBounds:
 
-        //  CameraTargetBounds(
-        //   LatLngBounds(
-        //     southwest: LatLng(31.10767212662318, 29.768784708530063),
-        //     northeast: LatLng(31.21872100749603, 30.16909901499451),
-        //   ),
-        // ),
-        initialCameraPosition: initialCameraPosition,
+            //  CameraTargetBounds(
+            //   LatLngBounds(
+            //     southwest: LatLng(31.10767212662318, 29.768784708530063),
+            //     northeast: LatLng(31.21872100749603, 30.16909901499451),
+            //   ),
+            // ),
+            initialCameraPosition: initialCameraPosition,
+          ),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: ElevatedButton(
+              onPressed: () {
+                CameraPosition newLocation = CameraPosition(
+                  target: LatLng(30.665108225912377, 30.11472735778697),
+                  zoom: 12,
+                );
+                googleMapController.animateCamera(
+                  CameraUpdate.newCameraPosition(newLocation),
+                );
+              },
+              child: Text('Change location'),
+            ),
+          ),
+        ],
       ),
     );
   }
